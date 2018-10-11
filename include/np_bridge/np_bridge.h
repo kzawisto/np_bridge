@@ -135,6 +135,8 @@ public:
 template<class K>
 class NumpyDetachable : public K{
 public:
+    template<typename ...Args>
+    NumpyDetachable(Args... args) : K(args...) {}
 	PyArrayObject * detach() {
 		K * ptr = static_cast<K*>(this);
 		assert(ptr->arr != nullptr);
