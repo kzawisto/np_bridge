@@ -25,7 +25,7 @@ struct  VECTOR_NAME(STRUCT_NAME) {
 		#define X(a,b) b.push_back(result.b);
 		FIELD_LIST
 		X(int, index_ordinal)
-		#undef X(a,b)
+		#undef X
 	}
 	PyObject * get_dic_of_numpy_arrays() {
 

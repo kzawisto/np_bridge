@@ -1,6 +1,7 @@
 
 #include<gtest/gtest.h>
 
+#include<np_bridge/all.h>
 #define FIELD_LIST X(int, hello) X(long double, world)
 #define STRUCT_NAME TestType
 #include<np_bridge/PandasSerializable.h>
