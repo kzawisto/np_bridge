@@ -26,6 +26,8 @@ Easily create and export POJO C++ structures to Pandas dataframes with autogener
 ```c++
 #define FIELD_LIST X(int, age) X(double, timestamp) X(long, id) 
 #define STRUCT_NAME Customer
+
+// not guarded include, parametrized with FIELD_LIST, STRUCT_NAME, can be included many times
 #include <np_bridge/PandasSerializable.h>
 //...
 //...
