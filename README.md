@@ -7,7 +7,7 @@ Create numpy array wrappers with checked types and dimmensions.
 ```c++
 // allocate new numpy array
 PyArrayObject * ar =np_bridge::get_numpy_array_1D<double>(10);
-// wrap array passed as argument
+// wrap array passed as argument, throws if type is not float64
 np_bridge::NumpyArrayView<double> view(array1);
 // and cast view to Eigen wrapper to use Eigen for computing
 auto eigen_vector_map = eigenify(view);
@@ -16,7 +16,7 @@ auto eigen_vector_map = eigenify(view);
 Access Pandas columns easily
 
 ```c++
-// pandas dataframe with column "epoch" and type np.int64, of type PyObject*
+// pandas dataframe with column "epoch" and type np.int64, of type PyObject* (throws if wrong dtype, not a dataframe etc).
 auto eigen_map = get_eigen_col<long int>(dataframe, "epoch");
 ```
 
