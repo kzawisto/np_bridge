@@ -179,13 +179,16 @@ class NumpyArrayCBuffer2D : public NumpyArray2DimD {
 	char * buffer;
 	bool is_c_order=true;
 public:
-	NumpyArrayCBuffer2D(long dimX, long dimY, bool is_c_order=true) : NumpyArray2DimD(nullptr),
+	NumpyArrayCBuffer2D(
+			long dimX, long dimY, bool is_c_order=true
+		) : NumpyArray2DimD(nullptr),
 	is_c_order(is_c_order){
 		buffer = new char[dimX * dimY * sizeof(double)];
 		this->data = buffer;
 		this->dimmensions = new npy_intp[2]{dimX,dimY};
      	this->strides = get_strides_2d<double>(dimX, dimY, is_c_order);
 	}
+
 	NumpyArrayCBuffer2D(NumpyArrayCBuffer2D && buf) : NumpyArray2DimD(nullptr){
 		buffer = buf.buffer;
 		buf.buffer = nullptr;
@@ -221,32 +224,62 @@ public:
 		delete[] dimmensions;
 	}
 };
-class NumpyArrayCBuffer1D : public NumpyArray1Dim<double> {
+template<typename T>
+class NumpyArrayCBuffer1D : public NumpyArray1Dim<T> {
 
 public:
-	NumpyArrayCBuffer1D(int dim) : NumpyArray1Dim(nullptr){
-			data = new char[dim * sizeof(double)];
-			dimmensions = new long[1]{dim};
-			strides = new long[1]{sizeof(double)};
+	NumpyArrayCBuffer1D(int dim) : NumpyArray1Dim<T>(nullptr){
+
+			this->data = new char[dim * sizeof(T)];
+			this->dimmensions = new long[1]{dim};
+			this->strides = new long[1]{sizeof(T)};
 	}
+	NumpyArrayCBuffer1D(const NumpyArrayCBuffer1D & buf) = delete;
+	NumpyArrayCBuffer1D(NumpyArrayCBuffer1D && buf): NumpyArray1Dim<T>(nullptr) {
+		this->data = buf.data;
+		buf.data = nullptr;
+		this->strides = buf.strides;
+		buf.strides = nullptr;
+		this->dimmensions = buf.dimmensions;
+		buf.dimmensions = nullptr;
+	}
+
 	~NumpyArrayCBuffer1D() {
-			delete[] data;
-			delete[] dimmensions;
-			delete[] strides;
+		if(this->data)
+			delete[] this->data;
+		if(this->dimmensions)
+			delete[] this->dimmensions;
+		if(this->strides)
+			delete[] this->strides;
 	}
 
 };
-class NumpyArrayCBufferView1D : public NumpyArray1Dim<double> {
+template<typename T>
+class NumpyArrayCBufferView1D : public NumpyArray1Dim<T> {
 public:
 
-	NumpyArrayCBufferView1D(char * data, int dim) : NumpyArray1Dim(nullptr){
+	NumpyArrayCBufferView1D(char * data, int dim) : NumpyArray1Dim<T>(nullptr){
 			this->data = data;
-			dimmensions = new long[1]{dim};
-			strides = new long[1]{sizeof(double)};
+			this->dimmensions = new long[1]{dim};
+			this->strides = new long[1]{sizeof(T)};
+	}
+	NumpyArrayCBufferView1D(const NumpyArrayCBufferView1D & buf) = delete;
+
+
+	NumpyArrayCBufferView1D(NumpyArrayCBufferView1D && buf): NumpyArray1Dim<T>(nullptr) {
+		this->data = buf.data;
+		buf.data = nullptr;
+		this->strides = buf.strides;
+		buf.strides = nullptr;
+		this->dimmensions = buf.dimmensions;
+
+		buf.dimmensions = nullptr;
 	}
 	~NumpyArrayCBufferView1D() {
-			delete[] dimmensions;
-			delete[] strides;
+		if(this->dimmensions)
+			delete[] this->dimmensions;
+		if(this->strides)
+			delete[] this->strides;
 	}
 };
 

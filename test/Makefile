@@ -6,7 +6,7 @@
 	g++ -c $< -o $@ -g -fPIC $(shell python3-config --cflags)	-I../include -O0
 .PHONY: all
 all: test.bin test_eigen.bin
-test.bin: test_main.o test_pandas_type.o
+test.bin: test_main.o test_pandas_type.o test_buffer.o
 	g++ $^ -o $@  -lgtest -lpthread -g $(shell python3-config --libs --ldflags)
 
 test_eigen.bin: test_eigen.o 

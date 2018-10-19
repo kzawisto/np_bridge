@@ -42,6 +42,10 @@ TEST(main, view_throws_on_type_mismatch) {
 	);
 }
 
+TEST(main, copying_cbuffer) {
+
+}
+
 int main(int argc, char **argv) {
 
 	Py_Initialize();
