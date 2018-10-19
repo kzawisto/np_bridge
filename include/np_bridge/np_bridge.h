@@ -177,17 +177,32 @@ public:
 typedef NumpyArray2Dim<double> NumpyArray2DimD;
 class NumpyArrayCBuffer2D : public NumpyArray2DimD {
 	char * buffer;
+	bool is_c_order=true;
 public:
-	NumpyArrayCBuffer2D(long dimX, long dimY, bool is_c_order=true) : NumpyArray2DimD(nullptr){
+	NumpyArrayCBuffer2D(long dimX, long dimY, bool is_c_order=true) : NumpyArray2DimD(nullptr),
+	is_c_order(is_c_order){
 		buffer = new char[dimX * dimY * sizeof(double)];
 		this->data = buffer;
 		this->dimmensions = new npy_intp[2]{dimX,dimY};
      	this->strides = get_strides_2d<double>(dimX, dimY, is_c_order);
 	}
+	NumpyArrayCBuffer2D(NumpyArrayCBuffer2D && buf) : NumpyArray2DimD(nullptr){
+		buffer = buf.buffer;
+		buf.buffer = nullptr;
+		data = buf.data;
+		buf.data = nullptr;
+		strides = buf.strides;
+		buf.strides = nullptr;
+		dimmensions = buf.dimmensions;
+		buf.dimmensions = dimmensions;
+	}
 	~NumpyArrayCBuffer2D() {
-		delete[] buffer;
-		delete[] strides;
-		delete[] dimmensions;
+		if(buffer)
+			delete[] buffer;
+		if(strides)
+			delete[] strides;
+		if(dimmensions)
+			delete[] dimmensions;
 	}
 };
 class NumpyArrayCBufferView2D : public NumpyArray2DimD {

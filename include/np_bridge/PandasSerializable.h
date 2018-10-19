@@ -8,9 +8,9 @@
 #define VECTOR_NAME(x) MERGE(x, Vector)
 
 struct STRUCT_NAME {
-	int index_ordinal = 0;
 	#define X(a,b) a b = 0;
 	FIELD_LIST
+	X(int, index_ordinal)
 	#undef X
 };
 
