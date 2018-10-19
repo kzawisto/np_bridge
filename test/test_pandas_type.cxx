@@ -13,5 +13,5 @@ TEST(test, pandas_serializable_type_smoke_test) {
 	t.world = 12;
 	TestTypeVector vec;
 	vec.push_back(t);
-	vec.push_back({.index_ordinal = 1, .hello= 15, .world=10});
+	vec.push_back({.hello= 15, .world=10, .index_ordinal = 1});
 }
