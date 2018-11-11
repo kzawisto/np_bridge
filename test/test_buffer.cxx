@@ -5,11 +5,6 @@
  *      Author: krystian
  */
 
-
-
-
-
-
 #include <gtest/gtest.h>
 #include <np_bridge/np_bridge.h>
 #include <vector>
