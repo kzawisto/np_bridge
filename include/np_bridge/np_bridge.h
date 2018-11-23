@@ -1,10 +1,10 @@
 
 #pragma once
 #include <Python.h>
-#include <np_bridge/NpDTypes.h>
-#include <np_bridge/utility.h>
 #include <numpy/arrayobject.h>
 #include <numpy/ndarraytypes.h>
+#include <np_bridge/NpDTypes.h>
+#include <np_bridge/utility.h>
 #include <unordered_set>
 #include <vector>
 
@@ -115,9 +115,7 @@ public:
   PyArrayObject *detach() {
     K *ptr = static_cast<K *>(this);
     assert(ptr->arr != nullptr);
-    PyArrayObject *arr_tmp = ptr->arr;
-    ptr->arr = nullptr;
-    return arr_tmp;
+    return ptr->arr;
   }
 };
 
@@ -139,9 +137,7 @@ public:
   ~NumpyArrayObj2Dim() { Py_XDECREF(arr); }
   PyArrayObject *detach() {
     assert(arr != nullptr);
-    PyArrayObject *arr_tmp = arr;
-    arr = nullptr;
-    return arr_tmp;
+    return arr;
   }
 };
 
